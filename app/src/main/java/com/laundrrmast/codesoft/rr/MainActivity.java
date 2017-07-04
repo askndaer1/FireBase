@@ -3,7 +3,6 @@ package com.laundrrmast.codesoft.rr;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -23,16 +22,16 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference databaseArtest;
     ListView listvieware;
     Query query;
-    List<artest> AList;
+    List<Customer> AList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         AList =new ArrayList<>();
         listvieware =(ListView) findViewById(R.id.listview11);
-        databaseArtest = FirebaseDatabase.getInstance().getReference("ar");
+        databaseArtest = FirebaseDatabase.getInstance().getReference("Customer");
 
-        query= databaseArtest.orderByChild("artestName").equalTo("fares");
+      //  query= databaseArtest.orderByChild("customerName").equalTo("fares");
 
 
 
@@ -49,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowSingalValue();
+             //   ShowSingalValue();
             }
         });
 
@@ -57,14 +56,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void ShowSingalValue() {
 
-        Query   mDatabase = databaseArtest.orderByChild("artestName").equalTo("fares").limitToFirst(1);
+        Query   mDatabase = databaseArtest.orderByChild("customerName").equalTo("fares").limitToFirst(1);
 
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot artSnapshot : dataSnapshot.getChildren()){
 
-                String carid = artSnapshot.child("artestName").getValue().toString();
+                String carid = artSnapshot.child("customerName").getValue().toString();
                 Toast.makeText(MainActivity.this,carid,Toast.LENGTH_SHORT).show();
                 }
             }
@@ -90,10 +89,10 @@ public class MainActivity extends AppCompatActivity {
 //                AList.clear();
 //                for(DataSnapshot artSnapshot : dataSnapshot.getChildren()){
 //
-//        artest artest00 = artSnapshot.getValue(artest.class);
+//        Customer artest00 = artSnapshot.getValue(Customer.class);
 //                    AList.add(artest00);
 //                }
-//artistlist adpter = new artistlist(MainActivity.this,AList);
+//CustomerListAdapter adpter = new CustomerListAdapter(MainActivity.this,AList);
 //                listvieware.setAdapter(adpter);
 //            }
 //
@@ -104,31 +103,31 @@ public class MainActivity extends AppCompatActivity {
 //        });
 
 
-        ValueEventListener eventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                AList.clear();
-                for(DataSnapshot artSnapshot : dataSnapshot.getChildren()){
-
-        artest artest00 = artSnapshot.getValue(artest.class);
-                    AList.add(artest00);
-                }
-artistlist adpter = new artistlist(MainActivity.this,AList);
-                listvieware.setAdapter(adpter);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                //
-            }
-        };
-        query.addValueEventListener(eventListener);
+//        ValueEventListener eventListener = new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                AList.clear();
+//                for(DataSnapshot artSnapshot : dataSnapshot.getChildren()){
+//
+//        Customer customer00 = artSnapshot.getValue(Customer.class);
+//                    AList.add(customer00);
+//                }
+//CustomerListAdapter adpter = new CustomerListAdapter(MainActivity.this,AList);
+//                listvieware.setAdapter(adpter);
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                //
+//            }
+//        };
+//        query.addValueEventListener(eventListener);
     }
 
     public void addart(){
 
        String id= databaseArtest.push().getKey();
-artest aa = new artest(id,"fares","fa");
+       Customer aa = new Customer("1","fares","01762958","KL","asknder");
         databaseArtest.child(id).setValue(aa);
         Toast.makeText(this,"add",Toast.LENGTH_SHORT).show();
 

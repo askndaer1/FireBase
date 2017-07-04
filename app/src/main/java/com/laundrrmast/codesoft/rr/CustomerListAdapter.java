@@ -15,14 +15,14 @@ import java.util.List;
  * Created by CodeSoft on 7/4/2017.
  */
 
-public class artistlist extends ArrayAdapter<artest> {
+public class CustomerListAdapter extends ArrayAdapter<Customer> {
     private Activity context;
-    private List<artest> artistList;
+    private List<Customer>  CustomerList;
 
-    public artistlist (Activity context, List<artest> artistlist){
-        super(context,R.layout.listlayout,artistlist);
-this.context=context;
-        this.artistList=artistlist;
+    public CustomerListAdapter(Activity context, List<Customer>  CustomerList){
+        super(context,R.layout.listlayout, CustomerList);
+        this.context=context;
+        this. CustomerList= CustomerList;
     }
 
     @NonNull
@@ -34,9 +34,9 @@ this.context=context;
         TextView textViewName = (TextView) ListViewItem.findViewById(R.id.textView200);
         TextView textViewGa = (TextView) ListViewItem.findViewById(R.id.textView00);
 
-        artest artest1 = artistList.get(position);
-        textViewName.setText(artest1.getArtestName());
-        textViewGa.setText(artest1.getArtestG());
+        Customer customer =  CustomerList.get(position);
+        textViewName.setText(customer.getCustomerName());
+        textViewGa.setText(customer.getCustomerPhone());
         return ListViewItem;
     }
 }
