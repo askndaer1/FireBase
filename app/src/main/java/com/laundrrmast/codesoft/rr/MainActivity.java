@@ -35,11 +35,6 @@ public class MainActivity extends AppCompatActivity {
         query= databaseArtest.orderByChild("artestName").equalTo("fares");
 
 
-//
-//         query = FirebaseDatabase.getInstance().getReference("ar")
-//                .child("artestName").equalTo("fares")
-//
-//               ;
 
 
         Button b1=(Button) findViewById(R.id.button2);
@@ -49,11 +44,45 @@ public class MainActivity extends AppCompatActivity {
                 addart();
             }
         });
+
+        Button b2=(Button) findViewById(R.id.button3);
+        b2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShowSingalValue();
+            }
+        });
+
+    }
+
+    private void ShowSingalValue() {
+
+        Query   mDatabase = databaseArtest.orderByChild("artestName").equalTo("fares").limitToFirst(1);
+
+        ValueEventListener postListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot artSnapshot : dataSnapshot.getChildren()){
+
+                String carid = artSnapshot.child("artestName").getValue().toString();
+                Toast.makeText(MainActivity.this,carid,Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+            }
+        };
+        mDatabase.addValueEventListener(postListener);
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+
+
 
 //        databaseArtest.addValueEventListener(new ValueEventListener() {
 //            @Override
