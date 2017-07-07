@@ -128,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
         query.addValueEventListener(eventListener);
     }
 
+
     public void AddNewCustomer() {
 
         String id = databaseCustomer.push().getKey();
