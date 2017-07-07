@@ -19,36 +19,33 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    DatabaseReference databaseArtest;
+    DatabaseReference databaseCustomer;
     ListView listvieware;
     Query query;
-    List<Customer> AList;
+    List<Customer> CustomerList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        AList =new ArrayList<>();
-        listvieware =(ListView) findViewById(R.id.listview11);
-        databaseArtest = FirebaseDatabase.getInstance().getReference("Customer");
-
-      //  query= databaseArtest.orderByChild("customerName").equalTo("fares");
+        CustomerList = new ArrayList<>();
+        listvieware = (ListView) findViewById(R.id.listview11);
+        databaseCustomer = FirebaseDatabase.getInstance().getReference("Customer");
 
 
-
-
-        Button b1=(Button) findViewById(R.id.button2);
+        Button b1 = (Button) findViewById(R.id.button2);
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addart();
+                AddNewCustomer();
             }
         });
 
-        Button b2=(Button) findViewById(R.id.button3);
+        Button b2 = (Button) findViewById(R.id.button3);
         b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             //   ShowSingalValue();
+                ShowSingalValue();
             }
         });
 
@@ -56,15 +53,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void ShowSingalValue() {
 
-        Query   mDatabase = databaseArtest.orderByChild("customerName").equalTo("fares").limitToFirst(1);
+        Query mDatabase = databaseCustomer.orderByChild("customerName").equalTo("fares").limitToFirst(1);
 
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot artSnapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot artSnapshot : dataSnapshot.getChildren()) {
 
-                String carid = artSnapshot.child("customerName").getValue().toString();
-                Toast.makeText(MainActivity.this,carid,Toast.LENGTH_SHORT).show();
+                    String carid = artSnapshot.child("customerName").getValue().toString();
+                    Toast.makeText(MainActivity.this, carid, Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -82,54 +79,61 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
 
-
-//        databaseArtest.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                AList.clear();
-//                for(DataSnapshot artSnapshot : dataSnapshot.getChildren()){
-//
-//        Customer artest00 = artSnapshot.getValue(Customer.class);
-//                    AList.add(artest00);
-//                }
-//CustomerListAdapter adpter = new CustomerListAdapter(MainActivity.this,AList);
-//                listvieware.setAdapter(adpter);
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-
-
-//        ValueEventListener eventListener = new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                AList.clear();
-//                for(DataSnapshot artSnapshot : dataSnapshot.getChildren()){
-//
-//        Customer customer00 = artSnapshot.getValue(Customer.class);
-//                    AList.add(customer00);
-//                }
-//CustomerListAdapter adpter = new CustomerListAdapter(MainActivity.this,AList);
-//                listvieware.setAdapter(adpter);
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                //
-//            }
-//        };
-//        query.addValueEventListener(eventListener);
     }
 
-    public void addart(){
 
-       String id= databaseArtest.push().getKey();
-       Customer aa = new Customer("1","fares","01762958","KL","asknder");
-        databaseArtest.child(id).setValue(aa);
-        Toast.makeText(this,"add",Toast.LENGTH_SHORT).show();
+    public void ViewFullList() {
+        databaseCustomer.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                CustomerList.clear();
+                for (DataSnapshot artSnapshot : dataSnapshot.getChildren()) {
+
+                    Customer customer = artSnapshot.getValue(Customer.class);
+                    CustomerList.add(customer);
+                }
+                CustomerListAdapter adpter = new CustomerListAdapter(MainActivity.this, CustomerList);
+                listvieware.setAdapter(adpter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+
+    public void ViewListWitSearch() {
+        query = databaseCustomer.orderByChild("customerName").equalTo("fares");
+        ValueEventListener eventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                CustomerList.clear();
+                for (DataSnapshot artSnapshot : dataSnapshot.getChildren()) {
+
+                    Customer customer = artSnapshot.getValue(Customer.class);
+                    CustomerList.add(customer);
+                }
+                CustomerListAdapter adpter = new CustomerListAdapter(MainActivity.this, CustomerList);
+                listvieware.setAdapter(adpter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                //
+            }
+        };
+        query.addValueEventListener(eventListener);
+    }
+
+    public void AddNewCustomer() {
+
+        String id = databaseCustomer.push().getKey();
+        Customer aa = new Customer("1", "fares", "01762958", "KL", "asknder");
+        databaseCustomer.child(id).setValue(aa);
+        Toast.makeText(this, "add", Toast.LENGTH_SHORT).show();
 
     }
 }
