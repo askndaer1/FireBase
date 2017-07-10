@@ -13,6 +13,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.laundrrmast.codesoft.rr.Laundromast.LaundromatList;
+import com.laundrrmast.codesoft.rr.Laundromast.laundromat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +39,8 @@ public class MainActivity extends AppCompatActivity {
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddNewCustomer();
+            //    AddNewCustomer();
+                AddNewL();
             }
         });
 
@@ -134,6 +137,14 @@ public class MainActivity extends AppCompatActivity {
         String id = databaseCustomer.push().getKey();
         Customer aa = new Customer("1", "fares", "01762958", "KL", "asknder");
         databaseCustomer.child(id).setValue(aa);
+        Toast.makeText(this, "add", Toast.LENGTH_SHORT).show();
+
+    }
+    public void AddNewL() {
+        DatabaseReference databaseCustomer1 = FirebaseDatabase.getInstance().getReference("laundromat");
+        String id = databaseCustomer1.push().getKey();
+        laundromat aa = new laundromat("11","dd","dd",5,4,"dd","dd","dd","dd");
+        databaseCustomer1.child(id).setValue(aa);
         Toast.makeText(this, "add", Toast.LENGTH_SHORT).show();
 
     }

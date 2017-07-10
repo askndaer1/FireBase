@@ -6,11 +6,11 @@ package com.laundrrmast.codesoft.rr;
 
 public class Customer {
 
-    String customerID;
-    String customerName;
-    String customerPhone;
-    String customerAddress;
-    String customerEmail;
+   private String customerID;
+    private String customerName;
+    private String customerPhone;
+    private String customerAddress;
+    private  String customerEmail;
 
 
     public Customer(){}
